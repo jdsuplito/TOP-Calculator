@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&display=swap');
+
+:root{
+  font-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* MAIN CONTAINER */
+.main {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(252, 216, 216);
+}
+
+/* TABLE CONTAINER */
+
+.calc-con {
+  height: 500px;
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  box-shadow: 0 0 5px #0000002d;
+  border-radius: 10px;
+  background: rgb(250, 234, 234);
+  padding: 20px 40px;
+}
+
+.calc-head {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'ZCOOL QingKe HuangYou', cursive;
+  background: #88ff008a;
+  box-shadow: inset 0 0 5px #0000002d;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.calc-head-displays {
+  height: 35px;
+  white-space: nowrap; 
+  width: 350px; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  text-align: end;
+  color: rgba(0, 0, 0, 0.541);
+  text-shadow: 0 0 3px #00000052;
+  padding-left: 10px;
+}
+
+.calc-body {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
+  flex-wrap: wrap;
+}
+
+.calc-num-con {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.calc-num-btn {
+  height: 40px;
+  width: 100%;
+  margin: 10px 5px;
+  font-family: 'ZCOOL QingKe HuangYou', cursive;
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #00000096;
+  box-shadow: inset 0 0 5px #0000002d;
+  border-radius: 10px;
+  border: none;
+  background: aliceblue;
+}
+
+.calc-num-btn:hover {
+  transform: scale(1.1);
+}
+
+.calc-num-btn:active {
+  transform: scale(1);
+}
+
+.all-clear {
+  background: rgb(224, 238, 250);
+}
+
+.delete {
+  background: rgba(255, 174, 174, 0.534);
+}
+
+.operation {
+  background: rgb(217, 250, 237);
+}
+
+.equal {
+  background: #88ff008a;
+}
