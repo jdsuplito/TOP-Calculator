@@ -1,3 +1,5 @@
+const calcContainer = document.querySelector(".calc-con");
+const calcHead = document.querySelector('.calc-head');
 const displayOneEl = document.getElementById("display-one");
 const displayOperators = document.getElementById("display-op");
 const displayTwoEl = document.getElementById("display-two");
@@ -6,6 +8,8 @@ const deleteBtn = document.querySelector(".delete");
 const numbersBtn = document.querySelectorAll(".number");
 const operatorsBtn = document.querySelectorAll(".operation");
 const equalBtn = document.querySelector(".equal");
+const btnStyling = document.querySelector("#btn-class");
+const conStyling = document.querySelector("#con-class");
 
 /**
  * This adds the functionality to the number buttons.
@@ -49,29 +53,44 @@ document.addEventListener("keyup", getKeyUpFunction);
  */
 function getKeyUpFunction(e) {
   if (
-    (e.type === "keyup" && e.key === ".") ||
+    (e.key === ".") ||
     (!isNaN(parseFloat(e.key)) && isFinite(e.key))
   ) {
+    highlightUiButton(e.key);
     //If the key pressed is a number or a decimal point.
     return updateNumbers(e); //Call the updateNumbers function.
   } else if (
-    (e.type === "keyup" && e.key === "+") ||
+    (e.key === "+") ||
     e.key === "-" ||
     e.key === "*" ||
     e.key === "/"
   ) {
+    highlightUiButton(e.key);
     //If the key pressed is an operator.
     return updateOperator(e); //Call the updateOperator function.
-  } else if (e.type === "keyup" && e.key === "Enter") {
+  } else if (e.key === "Enter") {
+    highlightUiButton(e.key);
     //If the key pressed is the enter key.
     return equal(); //Call the equal function.
-  } else if (e.type === "keyup" && e.key === "Backspace") {
+  } else if (e.key === "Backspace") {
+    highlightUiButton(e.key);
     //If the key pressed is the backspace key.
     return deleteOne(); //Call the deleteOne function.
-  } else if (e.type === "keyup" && e.key === "Delete") {
+  } else if (e.key === "Delete") {
+    highlightUiButton(e.key);
     //If the key pressed is the delete key.
     return clearAll(); //Call the clearAll function.
   }
+}
+
+function highlightUiButton(key) {
+  const isEscaped = ['+', '-', '*', '/'].includes(key) ? '\\' : '';
+  const button = document.querySelector(`#btn-${isEscaped}${key}`);
+  const classToUse = key === 'Enter' ? 'highlight-2' : 'highlight';
+  button.classList.add(classToUse);
+  setTimeout(() => {
+    button.classList.remove(classToUse);
+  }, 500);
 }
 
 /**
@@ -94,6 +113,8 @@ function updateNumbers(e) {
     //Otherwise, return.
     return;
   }
+
+  sayText(numVal === '.' ? 'point' : numVal); //Say the number.
 
   // These set of conditions are used to determine which display should be
   // updated based on the state of the displays.
@@ -138,6 +159,8 @@ function updateOperator(e) {
     return;
   }
 
+  sayText(operationVal);
+
   //These set of conditions are used to determine which display should be
   //updated based on the state of the displays.
   if (displayTwoEl.innerHTML === "0" && displayOneEl.innerHTML !== "0") {
@@ -172,6 +195,7 @@ function clearAll() {
   displayOneEl.innerHTML = "0";
   displayOperators.innerHTML = "";
   displayTwoEl.innerHTML = "0";
+  sayText('all clear');
 }
 
 /**
@@ -231,4 +255,72 @@ function equal() {
     displayOperators.innerHTML = "";
     displayTwoEl.innerHTML = "0";
   }
+
+  sayText(`equals ${displayTwoEl.innerHTML}`)
 }
+
+let synth = window.speechSynthesis;
+let voiceChoice;
+setTimeout(() => {
+  voiceChoice = synth.getVoices()[4];
+}, 500);
+
+/**
+ * This function is used to say a message
+ * @param {string} message - The message to be spoken.
+ */
+function sayText(message) {
+  const utterThis = new SpeechSynthesisUtterance(message);
+  utterThis.voice = voiceChoice;
+  synth.speak(utterThis);
+}
+
+/**
+ * This function gets the center coordinates of an element.
+ * @param {*} el - the element to get the coordinates of.
+ * @returns an object with the coordinates of the center of the element.
+ */
+function getCenter(el) {
+  const rect = el.getBoundingClientRect(); // Get the coordinates of the element
+  return {
+    x: rect.left + rect.width / 2, // The x coordinate of the center of the element.
+    y: rect.top + rect.height / 2 // The y coordinate of the center of the element.
+  };
+}
+
+// This holds the coordinates of the center of the whole calculator.
+const calcCenter = getCenter(calcContainer);
+
+// This tilts the calculator based on the position of the mouse from the center of the calculator.
+document.body.addEventListener("mousemove", (e) => {
+  // Destructure the coordinates of center of the calculator.
+  const { x: calcX, y: calcY } = calcCenter;
+  // The difference between the mouse coordinates and the center of the calculator.
+  const yRotation = calcY - e.clientY;
+  const xRotation = calcX - e.clientX;
+
+  // Set the visual thickness of the calculator when it is tilted
+  const calcThickness = 15;
+  // Set the color of the sides or thickness of the calculator when it is tilted
+  const thicknessColor = '#f1c1c1';
+  const displayShadowColor = '#00000042';
+  // Calculate the angle of the rotation
+  const targetXRotation = (yRotation/25) % 360;
+  const targetYRotation = (xRotation/30) % 360;
+
+  // Set the shadow of the display based on the angle of the rotation.
+  calcHead.style.boxShadow = `inset ${xRotation/120}px ${yRotation/120}px 6px ${displayShadowColor}`;
+
+  // Set dynamic styling for buttons and  calculator container based on the angle of the rotation.
+  btnStyling.innerHTML = `
+    .calc-num-btn {
+      box-shadow: ${xRotation/120}px ${yRotation/120}px 8px #00000050;
+    }
+  `;
+  conStyling.innerHTML = `
+    .calc-con {
+      transform: rotateX(${targetXRotation}deg) rotateY(${targetYRotation}deg);
+      box-shadow: ${xRotation/15}px ${yRotation/15}px 12px #0000003d, ${xRotation/50}px ${yRotation/50}px 0 ${thicknessColor};
+    }
+  `
+});
