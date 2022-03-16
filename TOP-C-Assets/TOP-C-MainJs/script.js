@@ -288,11 +288,11 @@ function getCenter(el) {
   };
 }
 
-// This holds the coordinates of the center of the whole calculator.
-const calcCenter = getCenter(calcContainer);
-
 // This tilts the calculator based on the position of the mouse from the center of the calculator.
 document.body.addEventListener("mousemove", (e) => {
+  // This holds the coordinates of the center of the whole calculator.
+  const calcCenter = getCenter(calcContainer);
+
   // Destructure the coordinates of center of the calculator.
   const { x: calcX, y: calcY } = calcCenter;
   // The difference between the mouse coordinates and the center of the calculator.

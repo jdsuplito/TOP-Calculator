@@ -33,7 +33,7 @@
   flex-wrap: wrap;
   border-radius: 10px;
   padding: 20px 40px;
-  transition: all 200ms;
+  transition: all 10ms;
   background: rgb(250, 234, 234);
   border-radius: 32px;
 }
