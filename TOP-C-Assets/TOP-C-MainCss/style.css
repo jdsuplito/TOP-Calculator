@@ -54,7 +54,7 @@
 .calc-head-displays {
   height: 35px;
   white-space: nowrap; 
-  width: 350px; 
+  width: 100%; 
   overflow: hidden;
   text-overflow: ellipsis; 
   text-align: end;
